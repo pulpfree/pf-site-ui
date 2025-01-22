@@ -5,6 +5,7 @@
   "scripts": {
     "build": "cross-env NODE_ENV=production react-router build",
     "dev": "react-router dev",
+    "preview": "NODE_ENV=production serve build/client/",
     "start": "cross-env NODE_ENV=production react-router-serve ./build/server/index.js",
     "typecheck": "react-router typegen && tsc",
     "lint": "eslint ."
@@ -12,7 +13,9 @@
   "dependencies": {
     "@react-router/node": "^7.1.1",
     "@react-router/serve": "^7.1.1",
+    "clsx": "^2.1.1",
     "isbot": "^5.1.17",
+    "motion": "^11.18.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router": "^7.1.1"

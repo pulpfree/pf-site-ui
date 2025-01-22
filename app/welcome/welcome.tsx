@@ -1,4 +1,4 @@
-import React from 'react'
+import { Link } from 'react-router'
 import logoDark from './logo-dark.svg'
 import logoLight from './logo-light.svg'
 
@@ -31,6 +31,9 @@ export function Welcome() {
                   </a>
                 </li>
               ))}
+              <li>
+                <Link to='/about'>About</Link>
+              </li>
             </ul>
           </nav>
         </div>
