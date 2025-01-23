@@ -5,7 +5,7 @@ type ButtonProps = {
   invert?: boolean
 } & (
   | React.ComponentPropsWithoutRef<typeof Link>
-  | (React.ComponentPropsWithoutRef<'button'> & { href?: undefined } & { to?: string })
+  | (React.ComponentPropsWithoutRef<'button'> & { to?: undefined })
 )
 
 export function Button({ invert = false, className, children, ...props }: ButtonProps) {
@@ -17,9 +17,11 @@ export function Button({ invert = false, className, children, ...props }: Button
       : 'bg-slate-950 text-white hover:bg-neutral-800',
   )
 
+  // console.log('props: ', props)
+
   const inner = <span className='relative top-px'>{children}</span>
 
-  if ('href' in props && typeof props.href === 'undefined') {
+  if (typeof props.to === 'undefined') {
     return (
       <button className={className} {...props}>
         {inner}

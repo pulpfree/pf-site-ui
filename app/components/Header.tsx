@@ -1,7 +1,9 @@
 import { useContext } from 'react'
+import { Link } from 'react-router'
 
 import clsx from 'clsx'
-import { Container, Logo, Logomark } from './'
+
+import { Button, Container, Logo, Logomark, RootLayoutContext } from './'
 
 export function Header({
   panelId,
@@ -24,7 +26,7 @@ export function Header({
     <Container>
       <div className='flex items-center justify-between'>
         <Link
-          href='/'
+          to='/'
           aria-label='Home'
           onMouseEnter={() => setLogoHovered(true)}
           onMouseLeave={() => setLogoHovered(false)}
@@ -33,7 +35,7 @@ export function Header({
           <Logo className='hidden h-10 sm:block' invert={invert} filled={logoHovered} />
         </Link>
         <div className='flex items-center gap-x-8'>
-          <Button href='/contact' invert={invert}>
+          <Button to='/contact' invert={invert}>
             Contact us
           </Button>
           <button

@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useId, useRef, useState } from 'react'
 import { useLocation } from 'react-router'
 
 import { motion, MotionConfig, useReducedMotion } from 'framer-motion'
 
-import { GridPattern, RootLayoutContext } from './'
+import { GridPattern, Footer, Header, MenuIcon, Navigation, RootLayoutContext } from './'
 
 function XIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
   return (
@@ -16,6 +16,10 @@ function XIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
 
 function RootLayoutInner({ children }: { children: React.ReactNode }) {
   const [expanded, setExpanded] = useState(false)
+  const panelId = useId()
+  const openRef = useRef<HTMLButtonElement>(null!)
+  const closeRef = useRef<HTMLButtonElement>(null!)
+  const navRef = useRef<React.ElementRef<'div'>>(null)
   const shouldReduceMotion = useReducedMotion()
 
   useEffect(() => {
@@ -43,8 +47,43 @@ function RootLayoutInner({ children }: { children: React.ReactNode }) {
           aria-hidden={expanded ? 'true' : undefined}
           inert={expanded ? false : undefined}
         >
-          <div>header</div>
+          <Header
+            panelId={panelId}
+            icon={MenuIcon}
+            toggleRef={openRef}
+            expanded={expanded}
+            onToggle={() => {
+              setExpanded((expanded) => !expanded)
+              window.setTimeout(() => closeRef.current?.focus({ preventScroll: true }))
+            }}
+          />
         </div>
+
+        <motion.div
+          layout
+          id={panelId}
+          style={{ height: expanded ? 'auto' : '0.5rem' }}
+          className='relative z-50 overflow-hidden bg-slate-950 pt-2'
+          aria-hidden={expanded ? undefined : 'true'}
+          inert={expanded ? undefined : false}
+        >
+          <motion.div layout={true} className='bg-neutral-800'>
+            <div ref={navRef} className='bg-slate-950 pb-16 pt-14'>
+              <Header
+                invert
+                panelId={panelId}
+                icon={XIcon}
+                toggleRef={closeRef}
+                expanded={expanded}
+                onToggle={() => {
+                  setExpanded((expanded) => !expanded)
+                  window.setTimeout(() => openRef.current?.focus({ preventScroll: true }))
+                }}
+              />
+            </div>
+            <Navigation />
+          </motion.div>
+        </motion.div>
       </header>
 
       <motion.div
@@ -61,9 +100,7 @@ function RootLayoutInner({ children }: { children: React.ReactNode }) {
 
           <main className='w-full flex-auto'>{children}</main>
 
-          <footer>
-            <div>footer</div>
-          </footer>
+          <Footer />
         </motion.div>
       </motion.div>
     </MotionConfig>
