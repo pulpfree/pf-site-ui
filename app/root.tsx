@@ -55,6 +55,9 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   } else if (import.meta.env.DEV && error && error instanceof Error) {
     details = error.message
     stack = error.stack
+  } else {
+    message = 'Error'
+    details = 'An unexpected error occurred.'
   }
 
   return (
