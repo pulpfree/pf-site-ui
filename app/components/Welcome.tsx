@@ -1,4 +1,4 @@
-import { Container, FadeIn, Services } from '../components'
+import { Container, ContactSection, FadeIn, Services } from '.'
 
 export function Welcome() {
   return (
@@ -16,6 +16,7 @@ export function Welcome() {
         </FadeIn>
       </Container>
       <Services />
+      <ContactSection />
     </>
   )
 }

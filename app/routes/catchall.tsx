@@ -1,5 +1,5 @@
 import type { Route } from './+types/about'
-// import { Welcome } from "../welcome/welcome";
+import { NotFound } from '../components'
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -11,6 +11,6 @@ export function meta({}: Route.MetaArgs) {
   ]
 }
 
-export default function About() {
-  return <div>Catchall</div>
+export default function Catchall() {
+  return <NotFound />
 }
