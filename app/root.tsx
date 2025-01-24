@@ -1,9 +1,8 @@
-import React from 'react'
 import { isRouteErrorResponse, Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router'
 
 import type { Route } from './+types/root'
-import stylesheet from './app.css?url'
-// import stylesheet from './styles/tailwind.css?url'
+// import stylesheet from './app.css?url'
+import stylesheet from './styles/tailwind.css?url'
 
 import { RootLayout } from './components/RootLayout'
 
@@ -14,10 +13,10 @@ export const links: Route.LinksFunction = () => [
   //   href: 'https://fonts.gstatic.com',
   //   crossOrigin: 'anonymous',
   // },
-  {
-    rel: 'stylesheet',
-    href: 'https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap',
-  },
+  // {
+  //   rel: 'stylesheet',
+  //   href: 'https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap',
+  // },
   { rel: 'stylesheet', href: stylesheet },
 ]
 
