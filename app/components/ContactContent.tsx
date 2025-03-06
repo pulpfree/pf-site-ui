@@ -2,6 +2,7 @@ import { useEffect, useId, useState } from 'react'
 import { useFetcher } from 'react-router'
 
 import { Border, Button, Container, FadeIn, Offices, PageIntro, SocialMedia } from '.'
+import { detectEnv } from '../../utils/environment'
 
 function TextInput({
   error,
@@ -10,7 +11,7 @@ function TextInput({
 }: React.ComponentPropsWithoutRef<'input'> & { error?: string; label: string }) {
   const id = useId()
 
-  console.log('props: ', props)
+  console.log('detectEnv: ', detectEnv())
 
   return (
     <div className='group relative z-0 transition-all focus-within:z-10'>
@@ -73,11 +74,25 @@ function ContactForm() {
       <fetcher.Form id='contact-form' method='post' onSubmit={() => setStatus('loading')}>
         <h2 className='font-display text-base font-semibold text-slate-950'>Work inquiries</h2>
         <div className='isolate mt-6 -space-y-px rounded-2xl bg-white/50'>
-          <TextInput label='Name' name='name' autoComplete='name' required error={errors['name']} />
-          <TextInput label='Email' type='email' name='email' autoComplete='email' required />
+          <TextInput
+            label='Name'
+            name='name'
+            autoComplete='name'
+            required
+            error={errors['name']}
+            defaultValue='Test Dummy'
+          />
+          <TextInput
+            label='Email'
+            type='email'
+            name='email'
+            autoComplete='email'
+            required
+            defaultValue='ron@pulpfree.io'
+          />
           <TextInput label='Company' name='company' autoComplete='organization' />
           <TextInput label='Phone' type='tel' name='phone' autoComplete='tel' />
-          <TextInput label='Message' name='message' />
+          <TextInput label='Message' name='message' required defaultValue='some message here' />
           {/* <div className='border border-neutral-300 px-6 py-8 first:rounded-t-2xl last:rounded-b-2xl'>
             <fieldset>
               <legend className='text-base/6 text-neutral-500'>Budget</legend>

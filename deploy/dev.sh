@@ -2,8 +2,6 @@
 
 . $HOME/.bashrc
 
-
-
 # Commands
 CP="/bin/cp"
 ECHO="/bin/echo"

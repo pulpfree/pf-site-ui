@@ -3,6 +3,7 @@ import { z } from 'zod'
 // import { data } from 'react-router'
 
 import { ContactContent } from '../components'
+import { detectEnv } from '../../utils/environment'
 
 const schema = z.object({
   name: z.string().min(3, 'Name must be at least 3 characters'),
@@ -29,10 +30,23 @@ export async function clientAction({
   await new Promise((res) => setTimeout(res, 1000))
   const formData = await request.formData()
   const contactInfo = Object.fromEntries(formData)
+  console.log('contactInfo', contactInfo)
+  console.log('detectenv: ', detectEnv())
   // const errors: { email?: string; name?: string } = {}
 
   try {
     schema.parse(contactInfo)
+    // send data to server
+    fetch('http://localhost:3000/', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(contactInfo),
+    })
+      .then((response) => response.json())
+      .then((data) => console.log('Success:', data))
+      .catch((error) => console.error('Error:', error))
     return { success: true }
   } catch (err: unknown) {
     if (err instanceof z.ZodError) {
