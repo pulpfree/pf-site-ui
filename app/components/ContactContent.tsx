@@ -2,7 +2,13 @@ import { useEffect, useId, useState } from 'react'
 import { useFetcher } from 'react-router'
 
 import { Border, Button, Container, FadeIn, Offices, PageIntro, SocialMedia } from '.'
-import { detectEnv } from '../../utils/environment'
+
+function scrollToTop() {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth',
+  })
+}
 
 function TextInput({
   error,
@@ -10,8 +16,6 @@ function TextInput({
   ...props
 }: React.ComponentPropsWithoutRef<'input'> & { error?: string; label: string }) {
   const id = useId()
-
-  console.log('detectEnv: ', detectEnv())
 
   return (
     <div className='group relative z-0 transition-all focus-within:z-10'>
@@ -25,16 +29,14 @@ function TextInput({
       <label
         htmlFor={id}
         className={`pointer-events-none absolute left-6 top-1/2 -mt-3 origin-left text-base/6 transition-all duration-200 peer-focus:-translate-y-4 peer-focus:scale-75 peer-focus:font-semibold peer-focus:text-slate-950 peer-[:not(:placeholder-shown)]:-translate-y-4 peer-[:not(:placeholder-shown)]:scale-75 peer-[:not(:placeholder-shown)]:font-semibold peer-[:not(:placeholder-shown)]:text-slate-950 ${
-          props.required ? 'after:content-["*"] after:ml-0.5 after:text-red-500' : ''
+          props.required
+            ? 'after:content-["*"] after:text-2xl/3 after:ml-0.5 after:text-red-500'
+            : ''
         }`}
       >
         {label}
       </label>
-      {/* <p className='absolute left-6 bottom-1/2 -mb-2 text-base/6 text-red-500'> */}
-      {error && (
-        <p className='absolute left-6 bottom-2 -mb-2 text-sm/3 text-red-500'>Have error</p>
-      )}{' '}
-      {/* <p className='mt-1 text-sm text-red-500'>{props.required ? 'Required' : ''}</p> */}
+      {error && <p className='absolute left-6 bottom-1 text-xs/4 text-red-500'>{error}</p>}{' '}
     </div>
   )
 }
@@ -43,19 +45,16 @@ function ContactForm() {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [errors, setErrors] = useState<Record<string, string>>({})
   const fetcher = useFetcher()
-  // const errors = fetcher.data?.errors
-
-  // console.log('errors: ', errors)
-  // console.log('fetcher.data?: ', fetcher.data)
 
   useEffect(() => {
-    if (fetcher.data?.success) {
-      window.scrollTo(0, 0)
+    const isSuccess = fetcher.data?.success
+
+    if (isSuccess) {
+      scrollToTop()
       setStatus('success')
     } else if (fetcher.data?.errors) {
       setStatus('error')
       setErrors(fetcher.data.errors)
-      console.log('errors: ', fetcher.data.errors)
     }
   }, [fetcher.data])
 
@@ -64,6 +63,17 @@ function ContactForm() {
       <FadeIn className='lg:order-last'>
         <p className='text-xl text-slate-950 font-semibold'>
           Thanks for reaching out! We&apos;ll be in touch shortly.
+        </p>
+      </FadeIn>
+    )
+  }
+
+  if (status === 'error' && errors['networkError']) {
+    scrollToTop()
+    return (
+      <FadeIn className='lg:order-last'>
+        <p className='text-xl text-slate-950 font-semibold'>
+          There was an error submitting the form. Please try again.
         </p>
       </FadeIn>
     )
@@ -88,22 +98,18 @@ function ContactForm() {
             name='email'
             autoComplete='email'
             required
+            error={errors['email']}
             defaultValue='ron@pulpfree.io'
           />
           <TextInput label='Company' name='company' autoComplete='organization' />
           <TextInput label='Phone' type='tel' name='phone' autoComplete='tel' />
-          <TextInput label='Message' name='message' required defaultValue='some message here' />
-          {/* <div className='border border-neutral-300 px-6 py-8 first:rounded-t-2xl last:rounded-b-2xl'>
-            <fieldset>
-              <legend className='text-base/6 text-neutral-500'>Budget</legend>
-              <div className='mt-6 grid grid-cols-1 gap-8 sm:grid-cols-2'>
-                <RadioInput label='$25K – $50K' name='budget' value='25' />
-                <RadioInput label='$50K – $100K' name='budget' value='50' />
-                <RadioInput label='$100K – $150K' name='budget' value='100' />
-                <RadioInput label='More than $150K' name='budget' value='150' />
-              </div>
-            </fieldset>
-          </div> */}
+          <TextInput
+            label='Message'
+            name='message'
+            required
+            error={errors['message']}
+            defaultValue='some message here'
+          />
         </div>
         <Button
           type='submit'
@@ -123,30 +129,6 @@ function ContactDetails() {
       <h2 className='font-display text-base font-semibold text-slate-950'>Our offices</h2>
 
       <Offices className='mt-10 grid grid-cols-1 gap-8 sm:grid-cols-2' />
-
-      {/* <Border className="mt-16 pt-16">
-        <h2 className="font-display text-base font-semibold text-slate-950">
-          Email us
-        </h2>
-        <dl className="mt-6 grid grid-cols-1 gap-8 text-sm sm:grid-cols-2">
-          {[
-            ['Careers', 'careers@studioagency.com'],
-            ['Press', 'press@studioagency.com'],
-          ].map(([label, email]) => (
-            <div key={email}>
-              <dt className="font-semibold text-slate-950">{label}</dt>
-              <dd>
-                <Link
-                  href={`mailto:${email}`}
-                  className="text-neutral-600 hover:text-slate-950"
-                >
-                  {email}
-                </Link>
-              </dd>
-            </div>
-          ))}
-        </dl>
-      </Border> */}
 
       <Border className='mt-16 pt-16'>
         <h2 className='font-display text-base font-semibold text-slate-950'>Follow us</h2>

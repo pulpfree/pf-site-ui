@@ -79,9 +79,9 @@ export function detectEnv(): EnvironmentInfo {
   // For browser environments, can also use location to determine environment
   if (isBrowser) {
     const hostname = window.location.hostname
-    if (hostname === 'localhost' || hostname === '127.0.0.1') {
+    if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname.includes('192.168.86')) {
       environment = 'development'
-    } else if (hostname.includes('staging') || hostname.includes('test')) {
+    } else if (hostname.includes('staging') || hostname.includes('dev')) {
       environment = 'staging'
     } else if (!hostname.includes('localhost')) {
       environment = 'production'

@@ -1,3 +1,4 @@
+
 #!/bin/sh
 
 . $HOME/.bashrc
@@ -9,10 +10,10 @@ PRT="/usr/bin/printf"
 RM="/bin/rm"
 
 # Vars
-S3_BUCKET="s3://pulpfree.io-dev/"
-DOMAIN="https://dev.pulpfree.io"
-PROFILE="pfdev"
-ENV="dev"
+S3_BUCKET="s3://pulpfree.io-prod/"
+DOMAIN="https://pulpfree.io"
+PROFILE="pfprod"
+ENV="prod"
 SEP="=========================================================================="
 
 $PRT "\n%s\n" $SEP
