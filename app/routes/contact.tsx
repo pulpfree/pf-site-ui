@@ -4,6 +4,9 @@ import { z } from 'zod'
 import { ContactContent } from '../components'
 import { detectEnv } from '../../utils/environment'
 
+// Keep in sync with MinFormElapsedMs in pf-site-contact-api
+const MIN_FORM_ELAPSED_MS = 3000
+
 const schema = z.object({
   name: z.string().min(2, 'Name must be at least 3 characters'),
   email: z.string().email('Invalid email address'),
@@ -29,8 +32,15 @@ export async function clientAction({
 }) {
   // await new Promise((res) => setTimeout(res, 1000))
   const formData = await request.formData()
-  const contactInfo = Object.fromEntries(formData)
+  const { website, renderedAt, ...contactInfo } = Object.fromEntries(formData)
   const { apiBaseUrl } = detectEnv()
+
+  // Bot check: honeypot filled or submitted faster than a human could type.
+  // Pretend it worked so the bot doesn't adapt. The API repeats this check.
+  const elapsedMs = Number(renderedAt) ? Date.now() - Number(renderedAt) : 0
+  if (website || elapsedMs < MIN_FORM_ELAPSED_MS) {
+    return { success: true }
+  }
 
   try {
     schema.parse(contactInfo)
@@ -53,7 +63,7 @@ export async function clientAction({
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(contactInfo),
+      body: JSON.stringify({ ...contactInfo, elapsedMs }),
     })
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`)

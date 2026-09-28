@@ -44,7 +44,11 @@ function TextInput({
 function ContactForm() {
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [errors, setErrors] = useState<Record<string, string>>({})
+  const [renderedAt, setRenderedAt] = useState(0)
   const fetcher = useFetcher()
+
+  // Set on mount (not during render) so the timestamp always comes from the browser clock
+  useEffect(() => setRenderedAt(Date.now()), [])
 
   useEffect(() => {
     const isSuccess = fetcher.data?.success
@@ -83,6 +87,19 @@ function ContactForm() {
     <FadeIn className='lg:order-last'>
       <fetcher.Form id='contact-form' method='post' onSubmit={() => setStatus('loading')}>
         <h2 className='font-display text-base font-semibold text-slate-950'>Work inquiries</h2>
+        {/* Honeypot: moved off-screen so people never see it, but bots fill it in */}
+        <div aria-hidden='true' className='absolute -left-[9999px] h-px w-px overflow-hidden'>
+          <label htmlFor='website'>Website</label>
+          <input
+            type='text'
+            id='website'
+            name='website'
+            tabIndex={-1}
+            autoComplete='off'
+            defaultValue=''
+          />
+        </div>
+        <input type='hidden' name='renderedAt' value={renderedAt} />
         <div className='isolate mt-6 -space-y-px rounded-2xl bg-white/50'>
           <TextInput
             label='Name'
