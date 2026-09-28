@@ -7,4 +7,5 @@ export default [
   route('contact', 'routes/contact.tsx'),
   route('process', 'routes/process.tsx'),
   route('*', 'routes/catchall.tsx'),
+  route('webbtech', 'routes/webbtech.tsx'),
 ] satisfies RouteConfig

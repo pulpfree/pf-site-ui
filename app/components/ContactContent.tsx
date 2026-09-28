@@ -90,7 +90,7 @@ function ContactForm() {
             autoComplete='name'
             required
             error={errors['name']}
-            defaultValue='Test Dummy'
+            // defaultValue='Test Dummy'
           />
           <TextInput
             label='Email'
@@ -99,7 +99,7 @@ function ContactForm() {
             autoComplete='email'
             required
             error={errors['email']}
-            defaultValue='ron@pulpfree.io'
+            // defaultValue='ron@pulpfree.io'
           />
           <TextInput label='Company' name='company' autoComplete='organization' />
           <TextInput label='Phone' type='tel' name='phone' autoComplete='tel' />
@@ -108,7 +108,7 @@ function ContactForm() {
             name='message'
             required
             error={errors['message']}
-            defaultValue='some message here'
+            // defaultValue='some message here'
           />
         </div>
         <Button

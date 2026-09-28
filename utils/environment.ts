@@ -23,7 +23,7 @@ export interface EnvironmentInfo {
 const API_BASE_URLS: Record<EnvironmentType, string> = {
   development: 'http://localhost:3000',
   staging: 'https://site-contact.api.dev.pulpfree.io',
-  production: 'https://api.example.com',
+  production: 'https://site-contact.api.pulpfree.io',
   test: 'http://localhost:3000',
 } as const
 

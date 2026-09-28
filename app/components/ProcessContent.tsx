@@ -7,7 +7,7 @@ import {
   TagListItem,
   StylizedImage,
 } from '.'
-import imageWhiteboard from '../images/whiteboard.jpg'
+import imageWhiteboard from '../images/office4.jpg'
 import imageLaptop from '../images/laptop.jpg'
 
 function Section({

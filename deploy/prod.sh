@@ -14,6 +14,7 @@ S3_BUCKET="s3://pulpfree.io-prod/"
 DOMAIN="https://pulpfree.io"
 PROFILE="pfprod"
 ENV="prod"
+CLOUDFRONT_DISTRIBUTION_ID="E1XLZBHXL8BQPJ"
 SEP="=========================================================================="
 
 $PRT "\n%s\n" $SEP
@@ -32,6 +33,9 @@ $PRT "\nbuild complete\n"
 
 $PRT "Uploading files to S3\n"
 $ECHO `aws s3 --profile $PROFILE sync ../build/client/ $S3_BUCKET --delete`
+
+$PRT "\nInvalidating CloudFront\n"
+$ECHO `aws cloudfront create-invalidation --profile $PROFILE --distribution-id $CLOUDFRONT_DISTRIBUTION_ID --paths "/*"`
 
 $PRT "\nDeployment complete!\n"
 $PRT "%s\n\n" "URL: $DOMAIN"
